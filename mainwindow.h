@@ -28,6 +28,10 @@ private slots:
     void pause() {pl->pause();}
     void stop()  {pl->stop();}
 
+    void appendText(QString &text){;}
+
+signals:
+    void signalLogAppend(QString);
 
 };
 

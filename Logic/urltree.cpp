@@ -2,6 +2,8 @@
 #include "url_util.h"
 #include "Qt/qfuture.h"
 #include "Qt/qtconcurrentrun.h"
+#include <Qt/qtconcurrentmap.h>
+#include "Qt/qfuturesynchronizer.h"
 
 #include <list>
 #include <queue>
@@ -18,8 +20,6 @@ URLTree::URLTree(t_ops *ops)
 
 void URLTree::scan(std::string * sub_string)
 {
-//    for (int n=0; n < ops->number_threads_scan; n++)
-//        QtConcurrent::run(this, &URLTree::scan_thread, sub_string);
      scan_thread(sub_string);
 }
 
@@ -30,6 +30,9 @@ void URLTree::scan_thread(std::string * sub_string)
 
     std::queue<Node *> current, next;
     current.push(root);
+
+    QFutureSynchronizer<void> synchronizer;
+    QThreadPool::globalInstance()->setMaxThreadCount(ops->maximun_scan_url);
 
     while (!current.empty())
     {
@@ -43,10 +46,12 @@ void URLTree::scan_thread(std::string * sub_string)
         Node *current_node = current.front();
         current.pop();
 
-        scan_node(&next, current_node, sub_string);
+        synchronizer.addFuture( QtConcurrent::run( this, &URLTree::scan_node, &next, current_node, sub_string) );
 
-        if (current.empty())
+        if (current.empty()){
+            synchronizer.waitForFinished();
             std::swap(current, next);
+        }
     }
 }
 

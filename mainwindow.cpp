@@ -46,7 +46,6 @@ void MainWindow::start()
     pl->set_number_threads_download(ui->spinBox_number_dewnload_threads->value());
     pl->set_maximun_scan_url(ui->spinBox_max_url->value());
 
-    QThreadPool::globalInstance()->setMaxThreadCount(ui->spinBox_number_scan_theads->value());
     pl->start();
 }
 
