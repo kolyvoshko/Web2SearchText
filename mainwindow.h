@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QThread>
+#include <QProcess>
 
 namespace Ui {
 class MainWindow;
@@ -27,12 +28,6 @@ private slots:
     void start();
     void pause() {pl->pause();}
     void stop()  {pl->stop();}
-
-    void appendText(QString &text){;}
-
-signals:
-    void signalLogAppend(QString);
-
 };
 
 #endif // MAINWINDOW_H

@@ -27,9 +27,7 @@ HEADERS  += mainwindow.h \
     Logic/t_ops.h \
     Logic/url_util.h \
     Logic/urltree.h \
-    Logic/scan_task.h
+    Logic/scan_task.h \
+    sync_thread.h
 
-FORMS    += mainwindow.ui \
-    open.ui \
-    server.ui \
-    addModeling.ui
+FORMS    += mainwindow.ui

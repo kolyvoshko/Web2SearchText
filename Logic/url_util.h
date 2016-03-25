@@ -7,6 +7,8 @@
 #include <string>
 #include <curl/curl.h>
 
+#include "t_ops.h"
+
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
 {
     ((std::string*)userp)->append((char*)contents, size * nmemb);
@@ -19,7 +21,7 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
  * @param url url addres
  * @return html code
  */
-std::string download_html(const char * url)
+std::string download_html(const char * url,  messgage_node * curl_message)
 {
     CURL *curl;
     CURLcode res;
@@ -29,10 +31,19 @@ std::string download_html(const char * url)
     if(curl) {
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-        curl_easy_setopt(curl, CURLOPT_TIMEOUT, 120);
-        curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 120);
+        curl_easy_setopt(curl, CURLOPT_TIMEOUT, 20);
+        curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 5);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
         res = curl_easy_perform(curl);
+
+        if(res != CURLE_OK)
+        {
+            std::string str;
+            str.append(curl_easy_strerror(res));
+            curl_message->type = "error_log";
+            curl_message->message = "curl_easy_perform() failed: " + str;
+        }
+
         curl_easy_cleanup(curl);
     }
 
@@ -50,7 +61,11 @@ static void find_url_core(std::list<std::string> *url_list, std::string *str, st
         std::string s;
         size_t index = pos;
 
-        while (str->at(index) != '"' && str->at(index) != ' ')
+        while (str->at(index) != '"'
+               && str->at(index) != ' '
+               && str->at(index) != '\<'
+               && str->at(index) != '\''
+               && str->at(index) != '\>')
         {
             ch = str->at(index);
             s.push_back(ch);
@@ -69,7 +84,8 @@ std::list<std::string> find_url(std::string *str)
 {
     std::list<std::string> url_list;
 
-    //  find_url_core(&url_list, str, "http://");
+    find_url_core(&url_list, str, "ftp://");
+    //find_url_core(&url_list, str, "http://");
     find_url_core(&url_list, str, "https://");
 
     return url_list;
@@ -82,7 +98,6 @@ bool find_string(std::string * string, std::string * sub_string)
     found = string->find(*sub_string);
 
     if (found!=std::string::npos){
-        //  std::cout << found << '\n';
         return true;
     }
     return false;

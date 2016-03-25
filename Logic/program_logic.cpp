@@ -1,5 +1,6 @@
 #include "program_logic.h"
 
+
 ProgramLogic::ProgramLogic()
 {
     ops = new t_ops;
@@ -12,7 +13,8 @@ void ProgramLogic::start()
     ops->if_stop = false;
 
     tree = new URLTree(ops);
-    tree->scan(&ops->research_text);
+
+    tree->start();
 }
 
 void ProgramLogic::stop()
@@ -24,9 +26,15 @@ void ProgramLogic::stop()
 
 void ProgramLogic::pause()
 {
-    ops->if_start = false;
-    ops->if_pause = true;
-    ops->if_stop = false;
+    if (ops->if_pause == false)
+    {
+        ops->if_pause = true;
+    }
+
+    else
+    {
+        ops->if_pause = false;
+    }
 }
 
 int ProgramLogic::get_current_level() const
@@ -61,5 +69,5 @@ void ProgramLogic::set_start_url(std::string url)
 
 void ProgramLogic::set_research_text(std::string text)
 {
-    this->ops->research_text = text;
+    this->ops->sub_string = text;
 }

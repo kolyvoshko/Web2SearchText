@@ -8,6 +8,7 @@
 #include <queue>
 
 #include <Qt/qthreadpool.h>
+#include "Qt/qfuturesynchronizer.h"
 
 /**
  * @brief The Node struct has data of url page, all url in page
@@ -32,7 +33,7 @@ struct Node
 /**
  * @brief The URLTree class is a graph of Node (url pages)
  */
-class URLTree
+class URLTree : public QThread
 {
 public:
     URLTree(t_ops *ops);
@@ -42,12 +43,14 @@ public:
      * @param sub_string research string
      */
     void scan(std::string *sub_string);
+    void run() { this->scan(&ops->sub_string); }
 
     void set_start_url(std::string url);
 
 private:
     Node * root;
     t_ops * ops;
+    QFutureSynchronizer<void> synchronizer;
 
     /**
      * @brief scan_node scan one node and all not find url to node->childs
@@ -65,6 +68,7 @@ private:
     bool find_node(std::string *url);
 
     void scan_thread(std::string * sub_string);
+
 };
 
 #endif // URLTREE_H

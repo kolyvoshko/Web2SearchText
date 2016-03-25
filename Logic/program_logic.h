@@ -22,9 +22,11 @@ public:
     void set_start_url(std::string url);
     void set_research_text(std::string text);
 
-private:
-    t_ops * ops;
     URLTree * tree;
+    t_ops * ops;
+
+private:
+
 };
 
 #endif // PROGRAM_LOGIC_H

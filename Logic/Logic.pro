@@ -10,7 +10,8 @@ LIBS += -lcurl
 
 SOURCES += main.cpp \
     urltree.cpp \
-    program_logic.cpp
+    program_logic.cpp \
+    programstatus.cpp
 
 include(deployment.pri)
 qtcAddDeployment()
