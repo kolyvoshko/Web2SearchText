@@ -18,11 +18,11 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_list">
        <attribute name="title">
-        <string>List</string>
+        <string>Setting</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
@@ -155,7 +155,7 @@
       </widget>
       <widget class="QWidget" name="tab_find_coincidence">
        <attribute name="title">
-        <string>Find coincidence</string>
+        <string>Findlist</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
