@@ -85,7 +85,7 @@ std::list<std::string> find_url(std::string *str)
     std::list<std::string> url_list;
 
     find_url_core(&url_list, str, "ftp://");
-    //find_url_core(&url_list, str, "http://");
+    find_url_core(&url_list, str, "http://");
     find_url_core(&url_list, str, "https://");
 
     return url_list;
