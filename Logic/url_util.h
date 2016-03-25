@@ -29,9 +29,10 @@ std::string download_html(const char * url,  messgage_node * curl_message)
 
     curl = curl_easy_init();
     if(curl) {
+
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-        curl_easy_setopt(curl, CURLOPT_TIMEOUT, 20);
+        curl_easy_setopt(curl, CURLOPT_TIMEOUT, 3);
         curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 5);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
         res = curl_easy_perform(curl);
